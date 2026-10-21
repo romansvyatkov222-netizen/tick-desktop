@@ -1,0 +1,76 @@
+/* Токены дизайна — единственное место с конкретными значениями цветов,
+   радиусов, длительностей и кривых (см. ТЗ, п. 6 и 10). */
+
+:root {
+  color-scheme: dark;
+
+  --font: "Segoe UI Variable Text", "Segoe UI", Inter, system-ui, sans-serif;
+
+  /* Базовые цвета */
+  --bg: #0c0c0f;
+  --accent: #f5a25d;
+  --accent-contrast: #221206;
+  --text: #ffffff;
+  --text-dim: #9a9aa5;
+  --text-faint: #62626d;
+
+  /* Цветовые пятна фона — то, что «преломляет» стекло */
+  --blob-warm: rgba(245, 162, 93, 0.10);
+  --blob-violet: rgba(139, 109, 255, 0.09);
+  --blob-warm-soft: rgba(245, 162, 93, 0.05);
+
+  /* Стекло */
+  --glass-fill: rgba(255, 255, 255, 0.06);
+  --glass-fill-strong: rgba(255, 255, 255, 0.10);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-highlight: rgba(255, 255, 255, 0.25);
+  --glass-danger: rgba(255, 255, 255, 0.35);
+  --glass-blur: 24px;
+  --glass-saturate: 170%;
+
+  --field-fill: rgba(255, 255, 255, 0.05);
+  --field-border: rgba(255, 255, 255, 0.13);
+
+  --shadow-soft: 0 12px 32px rgba(0, 0, 0, 0.35);
+  --btn-primary-shadow: 0 8px 24px rgba(245, 162, 93, 0.28);
+  --overlay-scrim: rgba(0, 0, 0, 0.55);
+  --overlay-blur: 8px;
+  --handle-color: rgba(255, 255, 255, 0.25);
+
+  /* Бейджи статусов в истории */
+  --badge-finished-bg: rgba(245, 162, 93, 0.16);
+  --badge-finished-text: var(--accent);
+  --badge-stopped-bg: rgba(255, 255, 255, 0.07);
+  --badge-stopped-text: var(--text-dim);
+
+  /* Кольцо таймера */
+  --ring-track: rgba(255, 255, 255, 0.14);
+  --ring-progress: rgba(255, 255, 255, 0.92);
+  --ring-glow: rgba(245, 162, 93, 0.45);
+
+  /* Радиусы */
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-pill: 999px;
+
+  /* Длительности и кривые анимаций */
+  --dur-fast: 200ms;
+  --dur: 300ms;
+  --dur-slow: 400ms;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --anim-blink: 2.4s;
+  --anim-pulse: 3.5s;
+
+  /* Размеры */
+  --nav-h: 68px;
+  --ring-size: 260px;
+  --ring-width: 3px;
+  --ring-glow-blur: 10px;
+  --ring-glow-blur-strong: 16px;
+  --countdown-size: 48px;
+  --btn-round-size: 54px;
+  --stage-pad-x: 24px;
+  --picker-height: 168px;
+  --picker-item-h: 36px;
+  --picker-col-w: 64px;
+}

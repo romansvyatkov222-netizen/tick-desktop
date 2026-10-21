@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Таймер</title>
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="glass.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+
+  <!-- Экран «Главная»: циферблат + кнопки под ним -->
+  <section class="screen active" id="screen-home">
+    <div class="stage">
+      <div class="ring-area" id="ring-area">
+        <svg class="ring" id="ring" aria-hidden="true"></svg>
+        <div class="ring-content">
+          <div class="countdown-wrap">
+            <div class="countdown" id="countdown">00:00:00</div>
+            <div class="countdown-status" id="countdown-status"></div>
+          </div>
+        </div>
+      </div>
+      <div class="controls" id="controls"></div>
+    </div>
+  </section>
+
+  <!-- Экран «История» -->
+  <section class="screen" id="screen-history">
+    <header class="history-head">
+      <h2 id="history-title"></h2>
+      <button class="text-btn" id="clear-history" type="button"></button>
+    </header>
+    <div class="history-list glass-scroll" id="history-list"></div>
+    <div class="empty" id="history-empty" hidden></div>
+  </section>
+
+  <nav class="nav glass" id="nav"></nav>
+
+  <!-- Диалог «Поставить таймер»: длительность и название -->
+  <div class="overlay" id="setup-overlay" hidden>
+    <div class="setup card glass">
+      <div class="sheet-handle" id="setup-handle"></div>
+      <div class="setup-title" id="setup-title"></div>
+      <div class="pickers" id="pickers"></div>
+      <input id="timer-name" class="field" type="text" maxlength="60" spellcheck="false" />
+      <div class="btn-row">
+        <button class="btn glass btn-secondary" id="setup-cancel" type="button"></button>
+        <button class="btn btn-primary" id="setup-start" type="button"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Диалог подтверждения очистки истории -->
+  <div class="overlay" id="confirm-overlay" hidden>
+    <div class="confirm card glass">
+      <div class="confirm-title" id="confirm-title"></div>
+      <div class="btn-row">
+        <button class="btn glass btn-secondary" id="confirm-no" type="button"></button>
+        <button class="btn btn-primary" id="confirm-yes" type="button"></button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

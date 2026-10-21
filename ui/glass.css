@@ -1,0 +1,18 @@
+/* Один класс .glass для всех «жидких» поверхностей: шторка, панель,
+   карточки, модальное окно, поле ввода (ТЗ, п. 6 и 10). */
+
+.glass {
+  background: var(--glass-fill);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    var(--shadow-soft);
+}
+
+/* Усиленная заливка — для кнопок и активных поверхностей */
+.glass-strong {
+  background: var(--glass-fill-strong);
+}

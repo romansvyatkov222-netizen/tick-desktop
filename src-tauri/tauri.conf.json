@@ -1,0 +1,49 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Tick",
+  "version": "1.0.0",
+  "identifier": "com.tick.timer",
+  "build": {
+    "frontendDist": "../ui"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "security": {
+      "csp": null
+    },
+    "windows": [
+      {
+        "label": "main",
+        "title": "Таймер",
+        "url": "index.html",
+        "width": 390,
+        "height": 640,
+        "resizable": false,
+        "maximizable": false,
+        "center": true,
+        "theme": "Dark",
+        "visible": true
+      },
+      {
+        "label": "modal",
+        "title": "Таймер завершён",
+        "url": "modal.html",
+        "width": 336,
+        "height": 320,
+        "resizable": false,
+        "maximizable": false,
+        "center": true,
+        "decorations": false,
+        "alwaysOnTop": true,
+        "skipTaskbar": true,
+        "visible": false,
+        "theme": "Dark",
+        "additionalBrowserArgs": "--autoplay-policy=no-user-gesture-required --disable-features=msWebOOUI,msPdfOOUI,msSmartScreenProtection"
+      }
+    ]
+  },
+  "bundle": {
+    "active": false,
+    "icon": ["icons/icon.ico"]
+  }
+}

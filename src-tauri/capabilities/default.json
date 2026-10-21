@@ -1,0 +1,6 @@
+{
+  "identifier": "default",
+  "description": "Права событий и стандартные возможности для обоих окон",
+  "windows": ["main", "modal"],
+  "permissions": ["core:default"]
+}

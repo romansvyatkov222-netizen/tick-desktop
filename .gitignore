@@ -1,0 +1,7 @@
+# Артефакты сборки Rust/Tauri
+/target
+/src-tauri/target
+/src-tauri/gen
+
+node_modules
+*.log

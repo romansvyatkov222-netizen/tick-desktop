@@ -1,0 +1,632 @@
+/* Компоненты и layout. Значения цветов/размеров — только через токены. */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Атрибут hidden всегда сильнее наших display:flex */
+[hidden] {
+  display: none !important;
+}
+
+/* Мягкие цветовые пятна фона — «среда» для стекла */
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(60% 40% at 85% 0%, var(--blob-warm), transparent 70%),
+    radial-gradient(55% 45% at 10% 110%, var(--blob-violet), transparent 70%),
+    radial-gradient(45% 35% at 50% 55%, var(--blob-warm-soft), transparent 70%),
+    var(--bg);
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* ===== Экраны ===== */
+
+.screen {
+  display: none;
+  height: 100%;
+}
+
+.screen.active {
+  display: flex;
+  flex-direction: column;
+  animation: screen-in var(--dur) var(--ease);
+}
+
+@keyframes screen-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ===== Главная: циферблат + кнопки ===== */
+
+#screen-home {
+  align-items: stretch;
+  padding-bottom: calc(var(--nav-h) + 12px);
+}
+
+.stage {
+  margin: auto;
+  width: 100%;
+  padding-inline: var(--stage-pad-x);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.ring-area {
+  position: relative;
+  width: var(--ring-size);
+  height: var(--ring-size);
+  flex: none;
+}
+
+.ring {
+  position: absolute;
+  inset: 0;
+}
+
+.ring-track {
+  fill: none;
+  stroke: var(--ring-track);
+  stroke-width: var(--ring-width);
+}
+
+.ring-progress {
+  fill: none;
+  stroke: var(--ring-progress);
+  stroke-width: var(--ring-width);
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 var(--ring-glow-blur) var(--ring-glow));
+  transition: stroke-dashoffset 600ms linear;
+}
+
+/* Пульс свечения во время отсчёта */
+body.mode-running .ring-progress {
+  animation: ring-pulse var(--anim-pulse) ease-in-out infinite;
+}
+
+@keyframes ring-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 var(--ring-glow-blur) var(--ring-glow));
+  }
+  50% {
+    filter: drop-shadow(0 0 var(--ring-glow-blur-strong) var(--ring-glow));
+  }
+}
+
+/* Пауза: мягкое мигание цифр */
+body.mode-paused .countdown {
+  animation: countdown-blink var(--anim-blink) ease-in-out infinite;
+}
+
+@keyframes countdown-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.ring-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.countdown-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.countdown {
+  font-size: var(--countdown-size);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* В покое цифры приглушённые — таймер ещё не идёт */
+.countdown-wrap.muted .countdown {
+  color: var(--text-dim);
+}
+
+.countdown-status {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+/* Круглая иконка старта/паузы/стопа */
+.btn-round {
+  width: var(--btn-round-size);
+  height: var(--btn-round-size);
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+}
+
+.btn-round:active {
+  transform: scale(0.92);
+}
+
+.btn-round.muted-icon {
+  color: var(--text-dim);
+}
+
+/* ===== Кнопки ===== */
+
+.btn-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.btn {
+  flex: 1;
+  height: 50px;
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  transition:
+    transform var(--dur-fast) var(--ease),
+    filter var(--dur-fast) var(--ease),
+    opacity var(--dur-fast) var(--ease);
+}
+
+.btn:active {
+  transform: scale(0.97);
+  filter: brightness(1.1);
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+  transform: none;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  box-shadow: var(--btn-primary-shadow);
+}
+
+.btn-secondary {
+  background: var(--glass-fill-strong);
+  border-color: var(--glass-border);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-soft);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+}
+
+.text-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-dim);
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: var(--radius-md);
+  transition: color var(--dur-fast) var(--ease);
+}
+
+.text-btn:hover {
+  color: var(--text);
+}
+
+/* ===== Экран «История» ===== */
+
+#screen-history {
+  padding: 20px 16px calc(var(--nav-h) + 12px);
+}
+
+.history-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: none;
+  margin-bottom: 12px;
+}
+
+.history-head h2 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.history-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 2px;
+  scrollbar-width: none;
+}
+
+.history-list::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+}
+
+.card-top,
+.card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.card-bottom {
+  margin-top: 6px;
+}
+
+.card-name {
+  font-size: 15px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-duration,
+.card-date {
+  font-size: 12px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.badge {
+  flex: none;
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  background: var(--badge-stopped-bg);
+  color: var(--badge-stopped-text);
+}
+
+.badge.finished {
+  background: var(--badge-finished-bg);
+  color: var(--badge-finished-text);
+}
+
+/* Пустое состояние строго по центру свободной области */
+.empty {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--text-dim);
+  font-size: 14px;
+}
+
+.empty svg {
+  color: var(--text-faint);
+}
+
+/* ===== Нижняя панель навигации ===== */
+
+.nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--nav-h);
+  display: flex;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  z-index: 10;
+}
+
+.nav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--text-dim);
+  transition: color var(--dur-fast) var(--ease);
+}
+
+.nav-btn .label {
+  font-size: 11px;
+}
+
+.nav-btn.active {
+  color: var(--accent);
+}
+
+.nav-btn:active {
+  transform: scale(0.96);
+}
+
+/* ===== Диалоги (стеклянные карточки поверх затемнения) ===== */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: var(--overlay-scrim);
+  -webkit-backdrop-filter: blur(var(--overlay-blur));
+  backdrop-filter: blur(var(--overlay-blur));
+}
+
+.card {
+  width: 100%;
+  padding: 14px 16px 16px;
+}
+
+.setup-title,
+.confirm-title {
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+/* ===== Колёсика-пикеры в диалоге ===== */
+
+.pickers {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  height: var(--picker-height);
+}
+
+.picker {
+  width: var(--picker-col-w);
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  touch-action: none;
+  /* Мягкое затухание значений к краям, как в iOS */
+  -webkit-mask-image: linear-gradient(transparent, #000 30%, #000 70%, transparent);
+  mask-image: linear-gradient(transparent, #000 30%, #000 70%, transparent);
+}
+
+.picker.dragging {
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+}
+
+.picker::-webkit-scrollbar {
+  display: none;
+}
+
+.picker ul {
+  list-style: none;
+  padding: calc((var(--picker-height) - var(--picker-item-h)) / 2) 0;
+}
+
+.picker li {
+  height: var(--picker-item-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-faint);
+  transition:
+    color var(--dur-fast) var(--ease),
+    font-size var(--dur-fast) var(--ease);
+}
+
+.picker li.near {
+  color: var(--text-dim);
+}
+
+.picker li.center {
+  color: var(--text);
+  font-size: 22px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ===== Поле ввода ===== */
+
+.field {
+  width: 100%;
+  height: 46px;
+  margin-top: 14px;
+  padding: 0 14px;
+  border-radius: var(--radius-md);
+  background: var(--field-fill);
+  border: 1px solid var(--field-border);
+  color: var(--text);
+  font: inherit;
+  outline: none;
+  user-select: text;
+  -webkit-user-select: text;
+  transition:
+    border-color var(--dur-fast) var(--ease),
+    opacity var(--dur-fast) var(--ease);
+}
+
+.field::placeholder {
+  color: var(--text-dim);
+}
+
+.field:focus {
+  border-color: var(--glass-highlight);
+}
+
+/* Ручка-полоска декоративного свернутого вида сверху карточки */
+.sheet-handle {
+  height: 16px;
+  margin: -2px auto 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--handle-color);
+}
+
+/* ===== Модальное окно «Таймер завершён» — в стиле главного экрана ===== */
+
+body.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  width: 296px;
+  padding: 24px 20px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  animation: screen-in var(--dur) var(--ease);
+}
+
+/* Колокольчик в стеклянном чипе — как круглые иконки на главном экране */
+.modal-icon {
+  width: 58px;
+  height: 58px;
+  flex: none;
+  color: var(--accent);
+  margin-bottom: 6px;
+  animation: bell-in var(--dur-slow) var(--ease);
+}
+
+@keyframes bell-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Название таймера — как имя карточки истории */
+.modal-name {
+  font-size: 15px;
+  font-weight: 600;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body.modal .modal-name.muted {
+  color: var(--text-dim);
+  font-weight: 400;
+  font-size: 14px;
+}
+
+/* Длительность — в типографике цифр с циферблата */
+.modal-duration {
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 14px;
+}
+
+/* Кнопка-подтверждение — акцентный круг в стиле btn-primary */
+.modal-ok {
+  width: var(--btn-round-size);
+  height: var(--btn-round-size);
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  box-shadow: var(--btn-primary-shadow);
+  transition:
+    transform var(--dur-fast) var(--ease),
+    filter var(--dur-fast) var(--ease);
+}
+
+.modal-ok:active {
+  transform: scale(0.92);
+  filter: brightness(1.1);
+}
+
+/* ===== Служебное ===== */
+
+/* Свёрнутое/скрытое окно: анимации не тратят ресурсы */
+body.suspended *,
+body.suspended *::before,
+body.suspended *::after {
+  animation-play-state: paused !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
